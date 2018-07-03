@@ -33,3 +33,12 @@ antibody bundle rapgenic/zsh-git-complete-urls
 zgen load rapgenic/zsh-git-complete-urls
 ```
 
+## How does it work??
+
+It just overrides one of the simplest functions in the default git zsh completion library, `__git_any_repositories`, which gives the suggestions for the repos, and by adding a single argument to the `_alternative` function:
+
+```console
+'remote-clipboard::__git_remote_clipboard'
+```
+
+where `__git_remote_clipboard` is another function defined in the plugin file that gives back an url suggestion from the clipboard, that is then added to the list of suggestions returned.
