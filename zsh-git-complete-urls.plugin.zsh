@@ -14,9 +14,17 @@ __git_remote_clipboard() {
     # xclip and xsel) return silently
     local clipboard && clipboard=$(clippaste) || return
 
-    # regex adapted from https://github.com/jonschlinkert/is-git-url
-    if [[ "$clipboard" =~ "(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(\S*?\.git|github.com\S*?)(\/?|\#[-\d\w._]+?)$" ]]; then
-        _wanted remote-clipboard expl 'remote urls' compadd -2 -V 1 -- "$clipboard"
+    local completions
+
+    while read -r clip; do
+        # regex adapted from https://github.com/jonschlinkert/is-git-url
+        if [[ "$clip" =~ "(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(\S*?\.git|github.com\S*?)(\/?|\#[-\d\w._]+?)$" ]]; then
+            completions+="$clip "
+        fi
+    done <<< "$clipboard"
+
+    if [[ -n "$completions" ]]; then
+        _wanted remote-clipboard expl 'remote urls' compadd -2 -V 1 ${=completions}
     fi
 }
 
