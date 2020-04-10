@@ -12,7 +12,7 @@ __git_remote_clipboard() {
 
     # If clippaste does not exist or returns an error (missing
     # xclip and xsel) return silently
-    local clipboard && clipboard=$(clippaste) || return
+    local clipboard && clipboard=$(clippaste) 2> /dev/null || return
 
     local completions
 
